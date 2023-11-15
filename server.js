@@ -15,12 +15,18 @@ dotEnv.config({ path: './config.env' });
 // Connecting to MongoDB Database
 const DB = process.env.DATABASE_LOCAL;
 mongoose
-  .connect('mongodb://127.0.0.1:27017/market', {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true,
-  })
+  .connect(
+    process.env.DATABASE_AWS.replace(
+      '<username>',
+      process.env.DATABASE_USER
+    ).replace('<password>', process.env.DATABASE_PASSWORD),
+    {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+      useUnifiedTopology: true,
+    }
+  )
   .then(() => console.log('Connected to the database'))
   .catch((err) => console.error('Error connecting to MongoDB:', err));
 
